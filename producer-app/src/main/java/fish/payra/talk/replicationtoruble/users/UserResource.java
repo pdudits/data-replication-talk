@@ -1,6 +1,7 @@
 package fish.payra.talk.replicationtoruble.users;
 
 import fish.payra.talk.replicationtoruble.users.events.RoleAdded;
+import fish.payra.talk.replicationtoruble.users.events.RoleRemoved;
 import fish.payra.talk.replicationtoruble.users.events.UserCreated;
 
 import javax.enterprise.context.RequestScoped;
@@ -11,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -39,6 +41,9 @@ public class UserResource {
 
     @Inject
     Event<RoleAdded> roleAdded;
+
+    @Inject
+    Event<RoleRemoved> roleRemoved;
 
     @POST
     @Path("/{name}")
@@ -78,6 +83,26 @@ public class UserResource {
             }
             if (u.roles.add(roleName)) {
                 roleAdded.fire(u.roleAdded(roleName));
+                return Response.created(userUri(u)).entity(u.roles).build();
+            } else {
+                return Response.notModified().build();
+            }
+        } else {
+            return notFound();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}/roles/{name}")
+    @Transactional
+    public Response removeRole(@PathParam("id") String id, @PathParam("name") String roleName) {
+        User u = mgr.find(User.class, id);
+        if (u != null) {
+            if (u.roles == null) {
+                u.roles = new HashSet<>();
+            }
+            if (u.roles.remove(roleName)) {
+                roleRemoved.fire(u.roleRemoved(roleName));
                 return Response.created(userUri(u)).entity(u.roles).build();
             } else {
                 return Response.notModified().build();

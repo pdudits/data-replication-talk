@@ -1,6 +1,7 @@
 package fish.payra.talk.replicationtoruble.users;
 
 import fish.payra.talk.replicationtoruble.users.events.RoleAdded;
+import fish.payra.talk.replicationtoruble.users.events.RoleRemoved;
 import fish.payra.talk.replicationtoruble.users.events.UserCreated;
 
 import javax.persistence.Column;
@@ -41,6 +42,13 @@ public class User {
 
     public RoleAdded roleAdded(String roleName) {
         RoleAdded event = new RoleAdded();
+        event.userId = id;
+        event.role = roleName;
+        return event;
+    }
+
+    public RoleRemoved roleRemoved(String roleName) {
+        RoleRemoved event = new RoleRemoved();
         event.userId = id;
         event.role = roleName;
         return event;
