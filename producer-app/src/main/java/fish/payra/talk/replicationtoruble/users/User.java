@@ -1,13 +1,12 @@
 package fish.payra.talk.replicationtoruble.users;
 
-import fish.payra.talk.replicationtoruble.users.events.RoleAdded;
-import fish.payra.talk.replicationtoruble.users.events.RoleRemoved;
+import fish.payra.talk.replicationtoruble.users.events.SubscriptionAdded;
+import fish.payra.talk.replicationtoruble.users.events.SubscriptionRemoved;
 import fish.payra.talk.replicationtoruble.users.events.UserCreated;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ public class User {
     String name;
 
     @ElementCollection
-    Set<String> roles;
+    Set<String> subscriptions;
 
     public String getId() {
         return id;
@@ -30,8 +29,8 @@ public class User {
         return name;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public Set<String> getSubscriptions() {
+        return subscriptions;
     }
 
     UserCreated created() {
@@ -40,17 +39,17 @@ public class User {
         return event;
     }
 
-    public RoleAdded roleAdded(String roleName) {
-        RoleAdded event = new RoleAdded();
+    public SubscriptionAdded subscriptionAdded(String roleName) {
+        SubscriptionAdded event = new SubscriptionAdded();
         event.userId = id;
-        event.role = roleName;
+        event.subscription = roleName;
         return event;
     }
 
-    public RoleRemoved roleRemoved(String roleName) {
-        RoleRemoved event = new RoleRemoved();
+    public SubscriptionRemoved subscriptionRemoved(String roleName) {
+        SubscriptionRemoved event = new SubscriptionRemoved();
         event.userId = id;
-        event.role = roleName;
+        event.subscription = roleName;
         return event;
     }
 }

@@ -1,28 +1,24 @@
 package fish.payra.talk.replicationtoruble.users;
 
-import fish.payra.talk.replicationtoruble.users.events.RoleAdded;
-import fish.payra.talk.replicationtoruble.users.events.RoleRemoved;
+import fish.payra.talk.replicationtoruble.users.events.SubscriptionAdded;
+import fish.payra.talk.replicationtoruble.users.events.SubscriptionRemoved;
 import fish.payra.talk.replicationtoruble.users.events.UserCreated;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.management.relation.Role;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.HashSet;
@@ -40,10 +36,10 @@ public class UserResource {
     Event<UserCreated> userCreated;
 
     @Inject
-    Event<RoleAdded> roleAdded;
+    Event<SubscriptionAdded> subAdded;
 
     @Inject
-    Event<RoleRemoved> roleRemoved;
+    Event<SubscriptionRemoved> subRemoved;
 
     @POST
     @Path("/{name}")
@@ -73,17 +69,17 @@ public class UserResource {
     }
 
     @PUT
-    @Path("/{id}/roles/{name}")
+    @Path("/{id}/subscriptions/{name}")
     @Transactional
-    public Response addRole(@PathParam("id") String id, @PathParam("name") String roleName) {
+    public Response addSubscription(@PathParam("id") String id, @PathParam("name") String subscriptionName) {
         User u = mgr.find(User.class, id);
         if (u != null) {
-            if (u.roles == null) {
-                u.roles = new HashSet<>();
+            if (u.subscriptions == null) {
+                u.subscriptions = new HashSet<>();
             }
-            if (u.roles.add(roleName)) {
-                roleAdded.fire(u.roleAdded(roleName));
-                return Response.created(userUri(u)).entity(u.roles).build();
+            if (u.subscriptions.add(subscriptionName)) {
+                subAdded.fire(u.subscriptionAdded(subscriptionName));
+                return Response.created(userUri(u)).entity(u.subscriptions).build();
             } else {
                 return Response.notModified().build();
             }
@@ -93,17 +89,17 @@ public class UserResource {
     }
 
     @DELETE
-    @Path("/{id}/roles/{name}")
+    @Path("/{id}/subscriptions/{name}")
     @Transactional
-    public Response removeRole(@PathParam("id") String id, @PathParam("name") String roleName) {
+    public Response removeSubscription(@PathParam("id") String id, @PathParam("name") String subscriptionName) {
         User u = mgr.find(User.class, id);
         if (u != null) {
-            if (u.roles == null) {
-                u.roles = new HashSet<>();
+            if (u.subscriptions == null) {
+                u.subscriptions = new HashSet<>();
             }
-            if (u.roles.remove(roleName)) {
-                roleRemoved.fire(u.roleRemoved(roleName));
-                return Response.created(userUri(u)).entity(u.roles).build();
+            if (u.subscriptions.remove(subscriptionName)) {
+                subRemoved.fire(u.subscriptionRemoved(subscriptionName));
+                return Response.created(userUri(u)).entity(u.subscriptions).build();
             } else {
                 return Response.notModified().build();
             }
