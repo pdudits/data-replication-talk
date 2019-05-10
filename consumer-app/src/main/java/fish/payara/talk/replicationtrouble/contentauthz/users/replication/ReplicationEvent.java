@@ -7,24 +7,21 @@ import java.util.function.BiConsumer;
 
 public class ReplicationEvent {
     public long id;
-    public String eventType;
-    public String payload;
+    public EventType eventType;
+    public GenericPayload payload;
 
     public ReplicationEvent() {
 
     }
 
-    public ReplicationEvent(long id, String eventType, String payload) {
+    public ReplicationEvent(long id, String eventType, GenericPayload payload) {
         this.id = id;
-        this.eventType = eventType;
+        this.eventType = EventType.valueOf(eventType);
         this.payload = payload;
     }
 
     void apply(Cursor c, Jsonb jsonb, Users processor) {
-        EventType event = EventType.valueOf(eventType);
-        GenericPayload parsedPayload = jsonb.fromJson(payload, GenericPayload.class);
-
-        event.accept(processor, parsedPayload);
+        eventType.accept(processor, payload);
         c.lastId = id;
     }
 
@@ -49,5 +46,14 @@ public class ReplicationEvent {
     public static class GenericPayload {
         public String userId;
         public String subscription;
+
+        public GenericPayload() {
+
+        }
+
+        public GenericPayload(String userId, String subscription) {
+            this.userId = userId;
+            this.subscription = subscription;
+        }
     }
 }
