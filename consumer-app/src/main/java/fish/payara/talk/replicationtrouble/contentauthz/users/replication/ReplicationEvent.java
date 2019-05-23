@@ -25,7 +25,7 @@ public class ReplicationEvent {
         c.lastId = id;
     }
 
-    enum EventType {
+    public enum EventType {
         UserCreated((proc, p) -> proc.addUser(p.userId)),
         UserRemoved((proc, p) -> proc.removeUser(p.userId)),
         SubscriptionAdded((proc, p) -> proc.addSubscription(p.userId, p.subscription)),

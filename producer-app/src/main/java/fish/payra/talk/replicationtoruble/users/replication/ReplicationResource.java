@@ -3,6 +3,7 @@ package fish.payra.talk.replicationtoruble.users.replication;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,7 +14,7 @@ import java.util.List;
 @Path("/replication")
 public class ReplicationResource {
 
-    @Inject
+    @PersistenceContext
     EntityManager mgr;
 
     @GET

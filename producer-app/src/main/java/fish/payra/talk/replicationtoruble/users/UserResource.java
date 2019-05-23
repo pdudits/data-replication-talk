@@ -3,6 +3,7 @@ package fish.payra.talk.replicationtoruble.users;
 import fish.payra.talk.replicationtoruble.users.events.SubscriptionAdded;
 import fish.payra.talk.replicationtoruble.users.events.SubscriptionRemoved;
 import fish.payra.talk.replicationtoruble.users.events.UserCreated;
+import fish.payra.talk.replicationtoruble.users.events.UserEvent;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
@@ -33,13 +34,7 @@ public class UserResource {
     @Context UriInfo info;
 
     @Inject
-    Event<UserCreated> userCreated;
-
-    @Inject
-    Event<SubscriptionAdded> subAdded;
-
-    @Inject
-    Event<SubscriptionRemoved> subRemoved;
+    Event<UserEvent> event;
 
     @POST
     @Path("/{name}")
@@ -48,8 +43,8 @@ public class UserResource {
         User u = new User();
         u.name = name;
         u.id = UUID.randomUUID().toString();
-        userCreated.fire(u.created());
         mgr.persist(u);
+        event.fire(u.created());
         return Response.created(userUri(u)).build();
     }
 
@@ -78,7 +73,7 @@ public class UserResource {
                 u.subscriptions = new HashSet<>();
             }
             if (u.subscriptions.add(subscriptionName)) {
-                subAdded.fire(u.subscriptionAdded(subscriptionName));
+                event.fire(u.subscriptionAdded(subscriptionName));
                 return Response.created(userUri(u)).entity(u.subscriptions).build();
             } else {
                 return Response.notModified().build();
@@ -98,8 +93,8 @@ public class UserResource {
                 u.subscriptions = new HashSet<>();
             }
             if (u.subscriptions.remove(subscriptionName)) {
-                subRemoved.fire(u.subscriptionRemoved(subscriptionName));
-                return Response.created(userUri(u)).entity(u.subscriptions).build();
+                event.fire(u.subscriptionRemoved(subscriptionName));
+                return Response.ok(userUri(u)).entity(u.subscriptions).build();
             } else {
                 return Response.notModified().build();
             }

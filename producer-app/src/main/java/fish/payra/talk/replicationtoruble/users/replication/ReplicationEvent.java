@@ -3,6 +3,7 @@ package fish.payra.talk.replicationtoruble.users.replication;
 import fish.payra.talk.replicationtoruble.users.events.UserEvent;
 
 import javax.json.bind.JsonbBuilder;
+import javax.json.bind.annotation.JsonbTypeDeserializer;
 import javax.json.bind.annotation.JsonbTypeSerializer;
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -8,8 +8,6 @@ import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-//TODO: Automatic Registration doesn't work
-//@RegisterRestClient
 @Path("/")
 public interface ReplicationAPI {
     @GET
