@@ -26,7 +26,6 @@ class ReplicationEndpointConfig {
     ServletContext servletContext;
 
     @Produces
-    @RestClient
     ReplicationAPI replicationEndpoint() {
         return RestClientBuilder.newBuilder().baseUri(determineUri()).build(ReplicationAPI.class);
     }
@@ -38,6 +37,10 @@ class ReplicationEndpointConfig {
             InstanceDescriptor descr = runtime.getLocalDescriptor();
             Integer port = descr.getHttpPorts().get(0);
             return URI.create(String.format("http://localhost:%d%s%s",port,servletContext.getContextPath(),endpointUrl.substring(1)));
+        } else if (endpointUrl.startsWith("/")) {
+            InstanceDescriptor descr = runtime.getLocalDescriptor();
+            Integer port = descr.getHttpPorts().get(0);
+            return URI.create(String.format("http://localhost:%d%s",port,endpointUrl));
         } else {
             return URI.create(endpointUrl);
         }

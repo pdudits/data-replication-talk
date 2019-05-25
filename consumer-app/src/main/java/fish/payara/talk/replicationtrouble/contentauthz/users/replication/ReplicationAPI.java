@@ -8,7 +8,6 @@ import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-@Path("/")
 public interface ReplicationAPI {
     @GET
     List<ReplicationEvent> fetch(@QueryParam("id") Long lastSeenId,
