@@ -4,7 +4,8 @@ module.exports = {
         proxy: {
             // plain string didn't work actually
             ".+": {
-                target: 'http://localhost:8080/'
+                target: 'http://localhost:8080/',
+                ws: false
             }
         }
     }
