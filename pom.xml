@@ -132,7 +132,7 @@
           <plugin>
             <groupId>fish.payara.maven.plugins</groupId>
             <artifactId>payara-micro-maven-plugin</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
             <configuration>
               <payaraVersion>${version.payara}</payaraVersion>
               <deployWar>true</deployWar>
@@ -146,12 +146,15 @@
                 </option>
               </javaCommandLineOptions>
               <commandLineOptions>
-                <option>
-                  <key>--rootdir</key>
-                  <value>${project.build.directory}/micro</value>
-                </option>
+<!--                <option>-->
+<!--                  <key>&#45;&#45;rootdir</key>-->
+<!--                  <value>${project.build.directory}/micro</value>-->
+<!--                </option>-->
                 <option>
                   <key>--nocluster</key>
+                </option>
+                <option>
+                  <key>--nested</key>
                 </option>
               </commandLineOptions>
             </configuration>
@@ -214,7 +217,7 @@
               <systemProperties>
                 <payara.microJar>${session.executionRootDirectory}/target/payara-micro-${version.payara}.jar</payara.microJar>
                 <payara.clusterEnabled>false</payara.clusterEnabled>
-                <payara.extraMicroOptions>--rootDir ${session.executionRootDirectory}/target/micro</payara.extraMicroOptions>
+                <payara.extraMicroOptions>--nested</payara.extraMicroOptions>
               </systemProperties>
             </configuration>
           </plugin>

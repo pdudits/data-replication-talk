@@ -39,14 +39,14 @@ public class User {
         return event;
     }
 
-    public SubscriptionAdded subscriptionAdded(String roleName) {
+    SubscriptionAdded subscriptionAdded(String roleName) {
         SubscriptionAdded event = new SubscriptionAdded();
         event.userId = id;
         event.subscription = roleName;
         return event;
     }
 
-    public SubscriptionRemoved subscriptionRemoved(String roleName) {
+    SubscriptionRemoved subscriptionRemoved(String roleName) {
         SubscriptionRemoved event = new SubscriptionRemoved();
         event.userId = id;
         event.subscription = roleName;
