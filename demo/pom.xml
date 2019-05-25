@@ -76,6 +76,65 @@
                 <configuration>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-backend</id>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>producer-app</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>consumer-app</artifactId>
+                            <version>${project.version}</version>
+                            <type>war</type>
+                        </artifactItem>
+                    </artifactItems>
+                    <stripVersion>true</stripVersion>
+                    <overWriteSnapshots>true</overWriteSnapshots>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>fish.payara.maven.plugins</groupId>
+                <artifactId>payara-micro-maven-plugin</artifactId>
+                <configuration>
+                    <contextRoot>/</contextRoot>
+                    <commandLineOptions>
+                        <option>
+                            <key>--deploy</key>
+                            <value>target/dependency/consumer-app.war</value>
+                        </option>
+                        <option>
+                            <key>--deploy</key>
+                            <value>target/dependency/producer-app.war</value>
+                        </option>
+                    </commandLineOptions>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>run-backend</id>
+            <activation>
+                <property>
+                    <name>backend</name>
+                </property>
+            </activation>
+            <build>
+                <defaultGoal>dependency:copy@copy-backend payara-micro:start</defaultGoal>
+            </build>
+        </profile>
+    </profiles>
 </project>
