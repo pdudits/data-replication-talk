@@ -9,6 +9,7 @@
     <module>producer-app</module>
     <module>consumer-app</module>
     <module>pleasync</module>
+    <module>demo</module>
   </modules>
   <packaging>pom</packaging>
   <properties>
