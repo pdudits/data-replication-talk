@@ -1,10 +1,12 @@
 <template>
-    <div>
-        <p>Last seed id: {{ lastId }}
-        <dl v-for="event in events" :key="event.id">
-            <dt>{{ event.id }} <span>{{event.eventType}}</span></dt>
-            <dd>{{ event.payload }}</dd>
-        </dl>
+    <div class="overflow-y-auto max-h-full " ref="scrollpane">
+        <p class="shadow-lg float-right m-2 p-2 bg-white absolute right-0 z-30"><span class="text-grey-700">Last seed id:</span>
+         <span class="block text-xl">{{ lastId }}</span>
+         </p>
+        <div v-for="event in events" :key="event.id">
+            <span class="w-10 inline-block">{{ event.id }}</span> <span class="text-green-800">{{event.eventType}}</span>
+            <pre class="font-mono mt-0">{{ event.payload }}</pre>
+        </div>
     </div>
 </template>
 
@@ -32,7 +34,7 @@ export default class ReplicationList extends Vue {
         fetch(`/producer-app/replication?id=${this.lastId}&size=1`).then(
             response => response.json()
         ).then(arr => {
-            if (Array.isArray(arr)) {
+            if (Array.isArray(arr) && arr.length > 0) {
                 this.lastId = arr[arr.length-1].id;
                 this.events.push(...arr)
             }
@@ -41,6 +43,11 @@ export default class ReplicationList extends Vue {
 
     beforeDestroy() {
         clearInterval(this.intervalHandle);
+    }
+
+    updated() {
+        let scrollpane = this.$refs.scrollpane as Element;
+        scrollpane.scrollTop = scrollpane.scrollHeight;
     }
 }
 </script>

@@ -1,11 +1,11 @@
 <template>
-  <div id="app" class="h-screen">
+  <div id="app" class="h-screen m-0 p-0">
     <div id="user" class="bg-gray-200 p-4 m-2">User
       <CreateUser v-on:user-created="onUserCreated"/>
       <UserList v-bind:user-list = "userUris"/>
     </div>
     <div id="subscription" class="bg-gray-200 p-4 m-2">Subscription</div>
-    <div id="replication" class="bg-gray-200 p-4 m-2">Replication result
+    <div id="replication" class="bg-gray-200 p-4 m-2 overflow-y-hidden relative">Replication result
       <ReplicationList/>
     </div>
     <div id="result" class="bg-gray-200 p-4 m-2">Result</div>
