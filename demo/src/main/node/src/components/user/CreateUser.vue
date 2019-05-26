@@ -1,5 +1,5 @@
 <template>
-    <form v-on:submit.prevent="createUser" class="flex">
+    <form v-on:submit.prevent="createUser" class="flex p-4">
         <label for="name" class="flex-initial m-2">User name</label>
         <input name="name" v-model="username" class="flex-grow">
     </form>
