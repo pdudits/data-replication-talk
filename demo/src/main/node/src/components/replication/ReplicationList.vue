@@ -1,6 +1,6 @@
 <template>
-    <div class="overflow-y-auto max-h-full " ref="scrollpane">
-        <div class="shadow-lg left-0 right-0 z-30 bg-white flex">
+    <div id="list" class="h-full">
+        <div class="shadow-lg bg-white flex">
             <p class="flex-grow">
                 <span class="text-grey-700">Prod id:</span>
                 <span class="block text-xl">{{ lastId }}</span>
@@ -14,9 +14,11 @@
                 <span class="block text-xl">{{ consumerInfo.lastId }}</span>
             </p>
         </div>
-        <div v-for="event in events" :key="event.id" class="px-4">
-            <span class="w-10 inline-block">{{ event.id }}</span> <span class="text-green-800">{{event.eventType}}</span>
-            <pre class="font-mono mt-0">{{ event.payload }}</pre>
+        <div class="overflow-auto h-full px-4" ref="scrollpane">
+            <div v-for="event in events" :key="event.id" class="mt-4">
+                <span class="w-10 inline-block">{{ event.id }}</span> <span class="text-green-800">{{event.eventType}}</span>
+                <pre class="font-mono mt-0">{{ event.payload }}</pre>
+            </div>
         </div>
     </div>
 </template>
@@ -90,3 +92,9 @@ export default class ReplicationList extends Vue {
     }
 }
 </script>
+<style>
+#list {
+    display: grid;
+    grid-template-rows: 5rem 1fr;
+}
+</style>

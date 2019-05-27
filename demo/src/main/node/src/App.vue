@@ -7,7 +7,7 @@
     <div id="currentUser" class="bg-gray-200 p-4">
       <UserDetail v-bind:user-uri = "selectedUri" v-bind:suggested-sub = "selectedSub"/>
     </div>
-    <div id="replication" class="bg-gray-200 overflow-y-hidden relative">
+    <div id="replication" class="bg-gray-200 overflow-y-hidden">
       <ReplicationList/>
     </div>
     <div id="subscriptions" class="bg-orange-300 p-4">
