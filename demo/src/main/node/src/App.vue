@@ -39,6 +39,14 @@ export default class App extends Vue {
   userUris: UserUri[] = [];
   selectedUri: string = "";
 
+  created() {
+    // Oh, I should have used VueX. Random backend code all over the place
+    fetch('/producer-app/user')
+      .then(r => r.json())
+      .then(r => this.userUris = r.map(u => {
+        return {uri: `/producer-app/user/${u.id}`};}));
+  }
+
   onUserCreated(uri: UserUri) {
     this.userUris.push(uri);
   }

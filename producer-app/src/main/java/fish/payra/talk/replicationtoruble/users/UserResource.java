@@ -8,6 +8,9 @@ import fish.payra.talk.replicationtoruble.users.events.UserEvent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -105,6 +108,15 @@ public class UserResource {
 
     private Response notFound() {
         return Response.status(Response.Status.NOT_FOUND).entity("Not found, sorry").type(MediaType.TEXT_PLAIN_TYPE).build();
+    }
+
+    @GET
+    public JsonArray getUsers() {
+        // just ad hoc projection of just IDs
+        JsonArrayBuilder result = Json.createArrayBuilder();
+        mgr.createQuery("select u from User u order by u.name", User.class)
+                .getResultStream().forEach(u -> result.add(Json.createObjectBuilder().add("id", u.id)));
+        return result.build();
     }
 
 
