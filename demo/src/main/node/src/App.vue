@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="h-screen m-0 p-0">
+  <div id="app" class="m-0 p-0">
     <div id="user" class="bg-gray-200">
       <CreateUser v-on:user-created="onUserCreated"/>
       <UserList v-bind:user-list = "userUris" v-on:user-selected="onUserSelected"/>
@@ -7,10 +7,13 @@
     <div id="currentUser" class="bg-gray-200 p-4">
       <UserDetail v-bind:user-uri = "selectedUri"/>
     </div>
-    <div id="replication" class="bg-gray-200 p-4 overflow-y-hidden relative">
+    <div id="replication" class="bg-gray-200 overflow-y-hidden relative">
       <ReplicationList/>
     </div>
-    <div id="subscription" class="bg-orange-300 p-4">Subscription</div>
+    <div id="subscriptions" class="bg-orange-300 p-4">Subscription</div>
+    <div id="currentSubscripion" class="bg-orange-200 p-4">Current sub</div>
+    <div id="selectedUser">Selected User</div>
+    <div id="selectedContent">Selected Content</div>
     <div id="result" class="bg-orange-300 bg-gray-200 p-4">Result</div>
   </div>
 </template>
@@ -51,18 +54,25 @@ export default class App extends Vue {
 <style>
 #app {
   display:grid;
-  grid-template-rows: auto [sub] auto [result] 6rem;
-  grid-template-columns: auto [user] auto auto;
+  grid-template-rows: 1fr [detail] 1fr [result] 6rem;
+  grid-template-columns: 1fr [sub] 1fr 1fr;
   grid-gap: 1rem;
+  height: 98vh;
 }
-#result {
-  grid-row-start: result
+#result, #selectedUser, #selectedContent {
+  grid-row-start: result;
 }
-#subscription {
-  grid-row-start: sub;
-  grid-column-start: user;
+#currentUser {
+  grid-row-start: detail;
 }
-#user, #replication {
+#subscriptions {
+  grid-row-start: 1;
+  grid-column-start: sub;
+}
+#currentSubscription {
+  grid-row-start:detail;
+}
+#replication {
   grid-row-start: span 2;
 }
 </style>

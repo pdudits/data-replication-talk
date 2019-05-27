@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Matrix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+</head>
+<body>
+  <table id="matrix">
+    <tr>
+      <th>Problem</th>
+      <th>Description</th>
+      <th class="vertical">Downstream call</th>
+      <th class="vertical">Shared data / Cache</th>
+      <th class="vertical">Data replication</th>
+      <th class="vertical">Messaging</th>
+      <th class="vertical">Push</th>
+      <th class="vertical">Event store</th>
+      <th class="vertical">Pull</th>
+  </tr>
+  <tr>
+      <th>Duplicate messages</th>
+      <td class="description">Single message may be delivered more than once. Idempotent consumer needed.</td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging severe"><p>
+          Unless guarded with XA, message may be delivered twice
+      </p></td>
+      <td class="push severe"><p>
+          There's no XA in RPC, idempotent consumer necessary
+      </p></td>
+      <td class="eventstore medium"><p>
+          If separate ACK required for event store, idempotent consumer necessary
+      </p></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Out of order messages</th>
+      <td class="description">Order of the messages is not guaranteed, even if they depend on each other</td>
+      <td class="downstream"></td>
+      <td class="shared low"><p>
+          Timing issues with cache may make data available in different order
+      </p></td>
+      <td class="replication"></td>
+      <td class="messaging high"><p>
+          In various configurations brokers do not guarantee message ordering
+      </p></td>
+      <td class="push high"><p>
+          Unless coordinated at both sides, messages might be processed out of order
+      </p></td>
+      <td class="eventstore medium"><p>
+          Dependencies need to be considered when sharding the event store
+      </p></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Consumer to Producer dependency</th>
+      <td class="description">Consumer needs to adapt to intternal (non-API) change of producer</td>
+      <td class="downstream"></td>
+      <td class="shared high"><p>
+          Anything producer shares becomes its API, and consumer needs to adapt
+      </p></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+    </tr>
+  <tr>
+      <th>Producer to Consumer dependency</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Producer concurrency issues</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Consumer concurrency issues</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Poison pills</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Consumer unavailability</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Producer unavailability</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Initial load</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Processing latency</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Shared infrastructure</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Eventual consistency</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Query limitation</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+  <tr>
+      <th>Producer load</th>
+      <td class="description"></td>
+      <td class="downstream"></td>
+      <td class="shared"></td>
+      <td class="replication"></td>
+      <td class="messaging"></td>
+      <td class="push"></td>
+      <td class="eventstore"></td>
+      <td class="pull"></td>
+  </tr>
+</table>   
+</body>
+</html>

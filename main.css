@@ -1,0 +1,54 @@
+body {
+    font-family: sans-serif;
+}
+
+#matrix th.vertical {
+    writing-mode: vertical-lr;
+    text-orientation: sideways;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+#matrix td {
+    width: 3em;
+}
+
+#matrix td.severe {
+    background-color: rgb(255, 136, 0);
+}
+
+#matrix td.high {
+    background-color: rgb(255, 194, 80);
+}
+
+#matrix td.low {
+    background-color: rgb(255, 236, 130);
+}
+
+#matrix td.description {
+    width: 15em;
+}
+
+#matrix td p {
+    overflow: hidden;
+    height: 0;
+    width: 2em;
+    opacity: 0;
+}
+
+#matrix td:hover {
+    border: 2px solid black;
+}
+#matrix td:hover p {
+    display: block;
+    width: auto;
+    height: auto;;
+    position: absolute;
+    background-color: #eeeeee;
+    padding: 0.5em;
+    box-shadow: 5px;
+    opacity: 1;
+    margin-left: 0.5em;
+    transition: opacity 700ms linear;
+}
+
