@@ -30,6 +30,7 @@ export type UserUri = { uri:string };
 @Component
 export default class UserDetail extends Vue {
     @Prop() userUri!:string;
+    @Prop() suggestedSub!:string;
 
     user: User|null = null;
 
@@ -45,6 +46,11 @@ export default class UserDetail extends Vue {
             this.user = null;
         }
 
+    }
+
+    @Watch("suggestedSub") 
+    onSuggestedSubChanged() {
+        this.subName = this.suggestedSub;
     }
 
     addSubscription() {
