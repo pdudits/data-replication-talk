@@ -23,8 +23,10 @@ public class ReplicationIT {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return ShrinkWrap.createFromZipFile(WebArchive.class, new File("target/consumer-app.war"))
-                .deleteClass(UserDataScheduler.class)
+        WebArchive webArchive = ShrinkWrap.createFromZipFile(WebArchive.class, new File("target/consumer-app.war"))
+                .deleteClass(UserDataScheduler.class);
+        webArchive.delete("WEB-INF/classes/META-INF/microprofile-config.properties"); // duplicate file
+        return webArchive
                 .addClass(UserPollStub.class)
                 .addAsManifestResource("replication-it.properties", "microprofile-config.properties")
                 .addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml").importTestDependencies().resolve("org.assertj:assertj-core").withTransitivity().asFile());

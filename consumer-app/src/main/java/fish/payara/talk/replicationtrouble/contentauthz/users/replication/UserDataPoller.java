@@ -20,6 +20,7 @@ public class UserDataPoller {
     Users processor;
 
     @Inject
+    @RestClient
     ReplicationAPI endpoint;
 
     @PersistenceContext

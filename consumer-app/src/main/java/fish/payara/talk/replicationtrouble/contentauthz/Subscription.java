@@ -4,11 +4,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "CONTENT_SUBSCRIPTION")
 public class Subscription {
     @Id
     String id;
@@ -24,15 +26,25 @@ public class Subscription {
         return id;
     }
 
+    public Set<String> getContents() {
+        return contents;
+    }
+
     public Subscription(String subscriptionId) {
         this.id = Objects.requireNonNull(subscriptionId, "subscription Id is required");
     }
 
-    void addContent(String id) {
+    boolean addContent(String id) {
         if (this.contents == null) {
             this.contents = new HashSet<>();
         }
-        this.contents.add(id);
+        return this.contents.add(id);
     }
 
+    public boolean removeContent(String contentId) {
+        if (this.contents == null) {
+            return false;
+        }
+        return this.contents.remove(contentId);
+    }
 }

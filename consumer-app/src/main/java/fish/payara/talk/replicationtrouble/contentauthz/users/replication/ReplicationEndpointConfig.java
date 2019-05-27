@@ -11,6 +11,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.net.URI;
+import java.util.logging.Logger;
 
 @Dependent
 class ReplicationEndpointConfig {
@@ -26,8 +27,11 @@ class ReplicationEndpointConfig {
     ServletContext servletContext;
 
     @Produces
+    @RestClient
     ReplicationAPI replicationEndpoint() {
-        return RestClientBuilder.newBuilder().baseUri(determineUri()).build(ReplicationAPI.class);
+        URI replicationUri = determineUri();
+        System.out.println("Will fetch replication data from "+replicationUri);
+        return RestClientBuilder.newBuilder().baseUri(replicationUri).build(ReplicationAPI.class);
     }
 
     private URI determineUri() {

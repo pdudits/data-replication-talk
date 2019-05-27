@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import java.util.Set;
         query = "select s.id from User u join u.subscriptions s where u.id =:userId and s.id = :subscriptionId")
 @NamedQuery(name = User.CONTENT_AUTHORIZED,
         query = "select s.id from User u join u.subscriptions s join s.contents c where c = :contentId and u.id = :userId")
+@Table(name = "CONTENT_USER")
 public class User {
     static final String SUBSCRIPTION_AUTHORIZED = "User.authorized";
     static final String CONTENT_AUTHORIZED = "User.contentAuthorized";

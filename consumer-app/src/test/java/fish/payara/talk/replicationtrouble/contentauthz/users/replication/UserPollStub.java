@@ -1,6 +1,9 @@
 package fish.payara.talk.replicationtrouble.contentauthz.users.replication;
 
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,7 +16,8 @@ public class UserPollStub implements ReplicationAPI {
     };
 
     @Override
-    public List<ReplicationEvent> fetch(Long lastSeenId, int pageSize) {
+    @GET
+    public List<ReplicationEvent> fetch(@QueryParam("id") Long lastSeenId,  @QueryParam("size")  int pageSize) {
         return Stream.of(events).filter(e -> lastSeenId == null || e.id > lastSeenId).limit(pageSize).collect(Collectors.toList());
     }
 }
