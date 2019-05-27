@@ -65,7 +65,7 @@ export default class App extends Vue {
     // Oh, I should have used VueX. Random backend code all over the place
     fetch('/producer-app/user')
       .then(r => r.json())
-      .then(r => this.userUris = r.map(u => {
+      .then(r => this.userUris = r.map((u:{id:string}) => {
         return {uri: `/producer-app/user/${u.id}`};}));
   }
 
