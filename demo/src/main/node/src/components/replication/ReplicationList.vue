@@ -40,6 +40,7 @@ type ConsumerInfo = {
 @Component
 export default class ReplicationList extends Vue {
     lastId = -1
+    prevLast = -1
     events: Event[] = [];
 
     intervalHandle:number = 0;
@@ -55,6 +56,7 @@ export default class ReplicationList extends Vue {
             response => response.json()
         ).then(arr => {
             if (Array.isArray(arr) && arr.length > 0) {
+                this.prevLast = this.lastId;
                 this.lastId = arr[arr.length-1].id;
                 this.events.push(...arr)
             }
@@ -73,8 +75,11 @@ export default class ReplicationList extends Vue {
     }
 
     updated() {
-        let scrollpane = this.$refs.scrollpane as Element;
-        scrollpane.scrollTop = scrollpane.scrollHeight;
+        if (this.prevLast != this.lastId) {
+            let scrollpane = this.$refs.scrollpane as Element;
+            scrollpane.scrollTop = scrollpane.scrollHeight;
+            this.prevLast = this.lastId;
+        }
     }
 
     get lastSyncTime() {
