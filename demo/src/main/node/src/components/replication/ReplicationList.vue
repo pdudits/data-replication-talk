@@ -1,8 +1,19 @@
 <template>
     <div class="overflow-y-auto max-h-full " ref="scrollpane">
-        <p class="shadow-lg float-right m-2 p-2 bg-white absolute right-0 z-30"><span class="text-grey-700">Last seed id:</span>
-         <span class="block text-xl">{{ lastId }}</span>
-         </p>
+        <div class="shadow-lg left-0 right-0 z-30 bg-white flex">
+            <p class="flex-grow">
+                <span class="text-grey-700">Prod id:</span>
+                <span class="block text-xl">{{ lastId }}</span>
+            </p>
+            <p class="flex-grow" v-if="consumerInfo">
+                <span class="text-grey-700">Last sync:</span>
+                <span class="block text-xl">{{ lastSyncTime }}</span>
+            </p>            
+            <p class="flex-grow" v-if="consumerInfo">
+                <span class="text-grey-700">Cons id:</span>
+                <span class="block text-xl">{{ consumerInfo.lastId }}</span>
+            </p>
+        </div>
         <div v-for="event in events" :key="event.id" class="px-4">
             <span class="w-10 inline-block">{{ event.id }}</span> <span class="text-green-800">{{event.eventType}}</span>
             <pre class="font-mono mt-0">{{ event.payload }}</pre>
@@ -19,12 +30,19 @@ type Event = {
     payload: object
 }
 
+type ConsumerInfo = {
+    lastSync: string
+    lastId: number|null
+}
+
 @Component
 export default class ReplicationList extends Vue {
     lastId = -1
     events: Event[] = [];
 
     intervalHandle:number = 0;
+
+    consumerInfo: ConsumerInfo|null = null;
 
     mounted() {
         this.intervalHandle = setInterval(this.fetchNew.bind(this), 1000);
@@ -39,6 +57,13 @@ export default class ReplicationList extends Vue {
                 this.events.push(...arr)
             }
         });
+        fetch(`/consumer-app/replication/info`).then(
+            r => {
+                if (r.ok) {
+                    r.json().then(info => this.consumerInfo = info)
+                }
+            }
+        )
     }
 
     beforeDestroy() {
@@ -48,6 +73,20 @@ export default class ReplicationList extends Vue {
     updated() {
         let scrollpane = this.$refs.scrollpane as Element;
         scrollpane.scrollTop = scrollpane.scrollHeight;
+    }
+
+    get lastSyncTime() {
+        if (this.consumerInfo == null) {
+            return null;
+        } else {
+            let time = Date.parse(this.consumerInfo.lastSync);
+            let format = new Intl.DateTimeFormat("default", {
+                hour12: false,
+                hour: 'numeric', minute: 'numeric', second: 'numeric',
+            });
+            
+            return format.format(time);
+        }
     }
 }
 </script>

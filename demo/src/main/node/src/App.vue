@@ -121,6 +121,7 @@ export default class App extends Vue {
   unscheduleCheck() {
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
+      this.checkInterval = 0;
     }
   }
 
