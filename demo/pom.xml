@@ -74,6 +74,11 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
+                    <webResources>
+                        <webResource>
+                            <directory>src/main/node/dist</directory>
+                        </webResource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>
@@ -134,6 +139,50 @@
             </activation>
             <build>
                 <defaultGoal>dependency:copy@copy-backend payara-micro:start</defaultGoal>
+            </build>
+        </profile>
+        <profile>
+            <id>build-frontend</id>
+            <activation>
+                <property>
+                    <name>!backend</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.7.6</version>
+                        <executions>
+                            <execution>
+                                <!-- optional: you don't really need execution ids, but it looks nice in your build log. -->
+                                <id>install-node-and-yarn</id>
+                                <goals>
+                                    <goal>install-node-and-yarn</goal>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <!-- optional: default phase is "generate-resources" -->
+                                <phase>generate-resources</phase>
+                            </execution>
+                            <execution>
+                                <id>build</id>
+                                <goals>
+                                    <goal>yarn</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run vue-cli-service build</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <nodeVersion>v12.2.0</nodeVersion>
+                            <yarnVersion>v1.16.0</yarnVersion>
+                            <installDirectory>target/node</installDirectory>
+                            <workingDirectory>src/main/node</workingDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>
