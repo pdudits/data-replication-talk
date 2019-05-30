@@ -16,7 +16,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <version.payara>5.192-SNAPSHOT</version.payara>
+    <version.payara>5.192</version.payara>
   </properties>
   <dependencies>
     <dependency>
@@ -133,7 +133,7 @@
           <plugin>
             <groupId>fish.payara.maven.plugins</groupId>
             <artifactId>payara-micro-maven-plugin</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.4</version>
             <configuration>
               <payaraVersion>${version.payara}</payaraVersion>
               <deployWar>true</deployWar>
@@ -165,6 +165,7 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
+                <id>prepare-payara-micro</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>copy</goal>
@@ -175,6 +176,7 @@
                       <groupId>fish.payara.extras</groupId>
                       <artifactId>payara-micro</artifactId>
                       <version>${version.payara}</version>
+                      <type>jar</type>
                       <overWrite>false</overWrite>
                       <outputDirectory>${session.executionRootDirectory}/target/</outputDirectory>
                       <destFileName>payara-micro-${version.payara}.jar</destFileName>

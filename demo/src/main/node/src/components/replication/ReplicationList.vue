@@ -5,11 +5,11 @@
                 <span class="text-grey-700">Prod id:</span>
                 <span class="block text-xl">{{ lastId }}</span>
             </p>
-            <p class="flex-grow" v-if="consumerInfo">
+            <p class="flex-grow text-orange-700" v-if="consumerInfo">
                 <span class="text-grey-700">Last sync:</span>
                 <span class="block text-xl">{{ lastSyncTime }}</span>
             </p>            
-            <p class="flex-grow" v-if="consumerInfo">
+            <p class="flex-grow text-orange-700" v-if="consumerInfo">
                 <span class="text-grey-700">Cons id:</span>
                 <span class="block text-xl">{{ consumerInfo.lastId }}</span>
             </p>
