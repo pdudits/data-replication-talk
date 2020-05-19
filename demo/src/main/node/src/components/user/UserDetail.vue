@@ -25,55 +25,55 @@
 <script lang="ts">
 import { Component, Prop, Vue, Emit, Watch } from 'vue-property-decorator';
 import { User } from './UserList.vue';
-export type UserUri = { uri:string };
+export interface UserUri { uri: string; }
 
 @Component
 export default class UserDetail extends Vue {
-    @Prop() userUri!:string;
-    @Prop() suggestedSub!:string;
+    @Prop() public userUri!: string;
+    @Prop() public suggestedSub!: string;
 
-    user: User|null = null;
+    public user: User|null = null;
 
-    subName:string = ""
+    public subName: string = '';
 
-    @Watch("userUri")
-    onUserUriChanged() {
-        if (this.userUri && this.userUri != "") {
+    @Watch('userUri')
+    public onUserUriChanged() {
+        if (this.userUri && this.userUri != '') {
             fetch(`/producer-app/user/${this.userUri}`)
-                .then(r => r.json())
-                .then(u => this.user = u );
+                .then((r) => r.json())
+                .then((u) => this.user = u );
         } else {
             this.user = null;
         }
 
     }
 
-    @Watch("suggestedSub") 
-    onSuggestedSubChanged() {
+    @Watch('suggestedSub')
+    public onSuggestedSubChanged() {
         this.subName = this.suggestedSub;
     }
 
-    addSubscription() {
-        if (!this.userUri || this.user == null || this.subName == "") {
+    public addSubscription() {
+        if (!this.userUri || this.user == null || this.subName == '') {
             return;
         }
-        this.changeSub(this.subName, "PUT")
-            .then(s => {
-                this.subName = "";
+        this.changeSub(this.subName, 'PUT')
+            .then((s) => {
+                this.subName = '';
             });
     }
 
-    deleteSub(subName:string) {
-        this.changeSub(subName, "DELETE");
+    public deleteSub(subName: string) {
+        this.changeSub(subName, 'DELETE');
     }
 
-    changeSub(subName:string, method: "PUT"|"DELETE") {
-        if (!this.userUri || this.user == null || subName == null || subName == "") {
-            return Promise.reject(new Error("No active user or sub"));
+    public changeSub(subName: string, method: 'PUT'|'DELETE') {
+        if (!this.userUri || this.user == null || subName == null || subName == '') {
+            return Promise.reject(new Error('No active user or sub'));
         } else {
             return fetch(`/producer-app/user/${this.userUri}/subscriptions/${subName}`, {method})
-                .then(r => r.json())
-                .then(s => this.user!.subscriptions = s)
+                .then((r) => r.json())
+                .then((s) => this.user!.subscriptions = s);
         }
     }
 }

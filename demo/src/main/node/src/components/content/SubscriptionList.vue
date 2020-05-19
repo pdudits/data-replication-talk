@@ -11,38 +11,38 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch, Emit } from 'vue-property-decorator';
 
-export type User = {
-    id: string,
-    name: string,
-    subscriptions: Array<string>,
+export interface User {
+    id: string;
+    name: string;
+    subscriptions: string[];
 }
 
 @Component
 export default class SubscriptionList extends Vue {
-    @Prop() newSubscriptions!: string[];
+    @Prop() public newSubscriptions!: string[];
 
-    activeSub: string = "";
+    public activeSub: string = '';
 
-    initialList: string[] = [];
+    public initialList: string[] = [];
 
-    created() {
+    public created() {
         fetch('/consumer-app/subscription')
-            .then(r => r.json())
-            .then((r:{id:string}[]) => this.initialList = r.map(i => i.id))
+            .then((r) => r.json())
+            .then((r: Array<{id: string}>) => this.initialList = r.map((i) => i.id));
     }
 
     get subscriptions() {
         return this.initialList.concat(this.newSubscriptions);
     }
 
-    @Emit("subscription-selected")
-    select(id:string) {
+    @Emit('subscription-selected')
+    public select(id: string) {
         if (this.activeSub == id) {
-            this.activeSub = "";
+            this.activeSub = '';
         } else {
             this.activeSub = id;
         }
-        console.log("selected", this.activeSub);
+        console.log('selected', this.activeSub);
         return this.activeSub;
     }
 }

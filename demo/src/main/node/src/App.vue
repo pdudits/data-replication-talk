@@ -43,82 +43,82 @@ import SubscriptionDetail from './components/content/SubscriptionDetail.vue';
     UserDetail,
     CreateSubscription,
     SubscriptionList,
-    SubscriptionDetail
+    SubscriptionDetail,
   },
 })
 export default class App extends Vue {
-  userUris: UserUri[] = [];
-  selectedUri: string = "";
+  public userUris: UserUri[] = [];
+  public selectedUri: string = '';
 
-  createdSubs: string[] = [];
+  public createdSubs: string[] = [];
 
-  selectedSub: string = "";
+  public selectedSub: string = '';
 
-  selectedContent: string = "";
+  public selectedContent: string = '';
 
-  contentChecked = false;
-  contentAuthorized = false;
-  authStatus = "";
-  checkInterval:number = 0;
+  public contentChecked = false;
+  public contentAuthorized = false;
+  public authStatus = '';
+  public checkInterval: number = 0;
 
-  created() {
+  public created() {
     // Oh, I should have used VueX. Random backend code all over the place
     fetch('/producer-app/user')
-      .then(r => r.json())
-      .then(r => this.userUris = r.map((u:{id:string}) => {
-        return {uri: `/producer-app/user/${u.id}`};}));
+      .then((r) => r.json())
+      .then((r) => this.userUris = r.map((u: {id: string}) => {
+        return {uri: `/producer-app/user/${u.id}`}; }));
   }
 
-  onUserCreated(uri: UserUri) {
+  public onUserCreated(uri: UserUri) {
     this.userUris.push(uri);
   }
 
-  onUserSelected(uri: string) {
+  public onUserSelected(uri: string) {
     this.selectedUri = uri;
     this.checkAuth();
   }
 
-  onSubCreated(id: string) {
+  public onSubCreated(id: string) {
     this.createdSubs.push(id);
   }
 
-  onSubSelected(id: string) {
-    console.log("Propagating sub", id)
+  public onSubSelected(id: string) {
+    console.log('Propagating sub', id);
     this.selectedSub = id;
   }
 
-  onContentSelected(id: string) {
+  public onContentSelected(id: string) {
     this.selectedContent = id;
     this.checkAuth();
   }
 
-  checkAuth() {
-    if (this.selectedUri != "" && this.selectedContent != "") {
+  public checkAuth() {
+    if (this.selectedUri != '' && this.selectedContent != '') {
       fetch(`/consumer-app/content/${this.selectedContent}`, {
         credentials: 'include',
         headers: {
-          'Authorization': this.selectedUri
-        }
-      }).then(r => {
+          Authorization: this.selectedUri,
+        },
+      }).then((r) => {
         this.contentChecked = true;
-        this.authStatus = `${r.status} ${r.statusText}`
+        this.authStatus = `${r.status} ${r.statusText}`;
         this.contentAuthorized = r.ok;
-        this.scheduleCheck()
+        this.scheduleCheck();
       });
     } else {
       this.contentChecked = false;
-      this.authStatus = "";
+      this.authStatus = '';
       this.unscheduleCheck();
     }
   }
 
-  scheduleCheck() {
+  public scheduleCheck() {
     if (!this.checkInterval) {
       this.checkInterval = setInterval(this.checkAuth.bind(this), 1000);
     }
   }
 
-  unscheduleCheck() {
+  public unscheduleCheck() {
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
       this.checkInterval = 0;
@@ -130,7 +130,7 @@ export default class App extends Vue {
       'bg-green-300': this.contentChecked && this.contentAuthorized,
       'bg-red-600': this.contentChecked && !this.contentAuthorized,
       'bg-orange-100': !this.contentChecked,
-    }
+    };
   }
 
 }

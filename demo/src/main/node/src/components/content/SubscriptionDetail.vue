@@ -22,49 +22,49 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch, Emit } from 'vue-property-decorator';
-type Subscription = {
-    id:string;
+interface Subscription {
+    id: string;
     contents: string[];
 }
 
 @Component
 export default class SubscriptionDetail extends Vue {
-    @Prop() subscriptionId!:string
+    @Prop() public subscriptionId!: string;
 
-    subscription: Subscription|null = null;
+    public subscription: Subscription|null = null;
 
-    content: string = ""
+    public content: string = '';
 
-    selectedContent:string = "";
+    public selectedContent: string = '';
 
-    @Watch("subscriptionId")
-    onSubscriptionIdChanged() {
-        console.log("Fetching", this.subscriptionId);
-        if (this.subscriptionId == null || this.subscriptionId == "") {
+    @Watch('subscriptionId')
+    public onSubscriptionIdChanged() {
+        console.log('Fetching', this.subscriptionId);
+        if (this.subscriptionId == null || this.subscriptionId == '') {
             this.subscription = null;
         } else {
             fetch(`/consumer-app/subscription/${this.subscriptionId}`)
-                .then(r => r.json())
-                .then(r => this.subscription = r);
+                .then((r) => r.json())
+                .then((r) => this.subscription = r);
         }
     }
 
-    addContent() {
+    public addContent() {
         fetch(`/consumer-app/subscription/${this.subscriptionId}/${this.content}`, {method: 'PUT'})
-            .then(r => r.json())
-            .then(r => this.subscription = r);
+            .then((r) => r.json())
+            .then((r) => this.subscription = r);
     }
 
-    deleteContent(c:string) {
+    public deleteContent(c: string) {
         fetch(`/consumer-app/subscription/${this.subscriptionId}/${c}`, {method: 'DELETE'})
-            .then(r => r.json())
-            .then(r => this.subscription = r);
+            .then((r) => r.json())
+            .then((r) => this.subscription = r);
     }
 
     @Emit('content-selected')
-    selectContent(c:string) {
+    public selectContent(c: string) {
         if (c == this.selectedContent) {
-            this.selectedContent = "";
+            this.selectedContent = '';
         } else {
             this.selectedContent = c;
         }

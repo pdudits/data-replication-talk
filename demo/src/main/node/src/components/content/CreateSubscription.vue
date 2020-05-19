@@ -8,21 +8,21 @@
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
 
-export type UserUri = { uri:string };
+export interface UserUri { uri: string; }
 
 @Component
 export default class CreateSubscription extends Vue {
 
-  private subName: string = "";
+  private subName: string = '';
 
   @Emit('subscription-created')
-  private createSub():Promise<String> {
+  private createSub(): Promise<String> {
       return fetch(`/consumer-app/subscription/${this.subName}`, {
-          method: 'PUT'
-      }).then(response => {
+          method: 'PUT',
+      }).then((response) => {
           console.log(response);
-          return response.json()
-      }).then(r => r.id);
+          return response.json();
+      }).then((r) => r.id);
   }
 }
 </script>
