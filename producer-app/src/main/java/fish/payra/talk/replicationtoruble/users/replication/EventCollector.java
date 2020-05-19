@@ -19,9 +19,6 @@ class EventCollector {
     @PersistenceContext
     EntityManager mgr;
 
-    @Inject
-    Jsonb jsonb;
-
     @Transactional(Transactional.TxType.MANDATORY)
     public void storeEvent(@Observes UserEvent event) {
         ReplicationEvent entity = new ReplicationEvent(event);

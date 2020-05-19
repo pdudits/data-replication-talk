@@ -2,7 +2,6 @@ package fish.payara.talk.replicationtrouble.contentauthz.users.replication;
 
 import fish.payara.talk.replicationtrouble.contentauthz.users.Users;
 
-import javax.json.bind.Jsonb;
 import java.util.function.BiConsumer;
 
 public class ReplicationEvent {
@@ -20,14 +19,14 @@ public class ReplicationEvent {
         this.payload = payload;
     }
 
-    void apply(Cursor c, Jsonb jsonb, Users processor) {
+    void apply(Cursor c, Users processor) {
         eventType.accept(processor, payload);
         c.lastId = id;
     }
 
     public enum EventType {
-        UserCreated((proc, p) -> proc.addUser(p.userId)),
-        UserRemoved((proc, p) -> proc.removeUser(p.userId)),
+        UserCreated((processor, payload) -> processor.addUser(payload.userId)),
+        UserRemoved((processor, payload) -> processor.removeUser(payload.userId)),
         SubscriptionAdded((proc, p) -> proc.addSubscription(p.userId, p.subscription)),
         SubscriptionRemoved((proc, p) -> proc.removeSubscription(p.userId, p.subscription));
         ;
@@ -48,7 +47,7 @@ public class ReplicationEvent {
         public String subscription;
 
         public GenericPayload() {
-
+            // for JSON-B
         }
 
         public GenericPayload(String userId, String subscription) {

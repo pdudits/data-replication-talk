@@ -10,7 +10,7 @@ public class UserDataScheduler {
     @Inject
     UserDataPoller poller;
 
-    @Schedule(hour = "*", minute = "*", second = "*/15")
+    @Schedule(hour = "*", minute = "*", second = "*/15", persistent = false)
     @Timeout
     void schedule() {
         poller.poll();
