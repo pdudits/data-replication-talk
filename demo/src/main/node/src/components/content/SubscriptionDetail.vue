@@ -21,17 +21,18 @@
 </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue, Watch, Emit } from 'vue-property-decorator';
+import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
+
 interface Subscription {
-    id: string;
-    contents: string[];
+  id: string;
+  contents: string[];
 }
 
 @Component
 export default class SubscriptionDetail extends Vue {
-    @Prop() public subscriptionId!: string;
+  @Prop() public subscriptionId!: string;
 
-    public subscription: Subscription|null = null;
+  public subscription: Subscription|null = null;
 
     public content: string = '';
 
@@ -63,13 +64,22 @@ export default class SubscriptionDetail extends Vue {
 
     @Emit('content-selected')
     public selectContent(c: string) {
-        if (c == this.selectedContent) {
-            this.selectedContent = '';
-        } else {
-            this.selectedContent = c;
-        }
-        return this.selectedContent;
+      if (c == this.selectedContent) {
+        this.selectedContent = '';
+      } else {
+        this.selectedContent = c;
+      }
+      return this.selectedContent;
     }
 
 }
 </script>
+<style>
+li {
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+}
+</style>

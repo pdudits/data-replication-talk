@@ -115,6 +115,14 @@
                 <artifactId>payara-micro-maven-plugin</artifactId>
                 <configuration>
                     <contextRoot>/</contextRoot>
+                    <javaCommandLineOptions>
+                        <option>
+                            <key>
+                                -Dfish.payara.talk.replicationtrouble.contentauthz.user.replication.ReplicationAPI/mp-rest/url
+                            </key>
+                            <value>http://localhost:8080/producer-app/replication</value>
+                        </option>
+                    </javaCommandLineOptions>
                     <commandLineOptions>
                         <option>
                             <key>--deploy</key>
@@ -176,8 +184,8 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <nodeVersion>v12.2.0</nodeVersion>
-                            <yarnVersion>v1.16.0</yarnVersion>
+                            <nodeVersion>v18.10.0</nodeVersion>
+                            <yarnVersion>v1.22.19</yarnVersion>
                             <installDirectory>target/node</installDirectory>
                             <workingDirectory>src/main/node</workingDirectory>
                         </configuration>

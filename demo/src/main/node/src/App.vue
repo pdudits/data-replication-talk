@@ -1,20 +1,23 @@
 <template>
   <div id="app" class="m-0 p-0">
+    <h2>Billing System →</h2>
+    <h2>Content System</h2>
+    <h2>Replication Monitor</h2>
     <div id="user" class="bg-gray-200">
       <CreateUser v-on:user-created="onUserCreated"/>
-      <UserList v-bind:user-list = "userUris" v-on:user-selected="onUserSelected"/>
+      <UserList v-bind:user-list="userUris" v-on:user-selected="onUserSelected"/>
     </div>
     <div id="currentUser" class="bg-gray-200 p-4">
-      <UserDetail v-bind:user-uri = "selectedUri" v-bind:suggested-sub = "selectedSub"/>
+      <UserDetail v-bind:user-uri="selectedUri" v-bind:suggested-sub="selectedSub"/>
     </div>
     <div id="replication" class="bg-gray-200 overflow-y-hidden">
       <ReplicationList/>
     </div>
-    <div id="subscriptions" class="bg-orange-300 p-4">
+    <div id="subscriptions" class="bg-orange-300">
       <CreateSubscription v-on:subscription-created="onSubCreated"/>
       <SubscriptionList v-bind:new-subscriptions="createdSubs" v-on:subscription-selected="onSubSelected"/>
     </div>
-    <div id="currentSubscripion" class="bg-orange-200 p-4">
+    <div id="currentSubscription" class="bg-orange-200 p-4">
       <SubscriptionDetail v-bind:subscription-id="selectedSub" v-on:content-selected="onContentSelected"/>
     </div>
     <div id="selectedUser">Selected User<p>{{selectedUri}}</p></div>
@@ -24,9 +27,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
-import CreateUser , { UserUri } from './components/user/CreateUser.vue';
+import {Component, Vue} from 'vue-property-decorator';
+import CreateUser, {UserUri} from './components/user/CreateUser.vue';
 import UserList from './components/user/UserList.vue';
 import UserDetail from './components/user/UserDetail.vue';
 import ReplicationList from './components/replication/ReplicationList.vue';
@@ -139,26 +141,28 @@ export default class App extends Vue {
 <style src="@/main.scss" lang="scss"></style>
 <style>
 #app {
-  display:grid;
-  grid-template-rows: 1fr [detail] 1fr [result] 6rem;
+  display: grid;
+  grid-template-rows: 4rem 1fr [detail] 1fr [result] 6rem;
   grid-template-columns: 1fr [sub] 1fr 1fr;
   grid-gap: 1rem;
   height: 98vh;
 }
+
 #result, #selectedUser, #selectedContent {
   grid-row-start: result;
 }
+
+#subscriptions, #currentSubscription {
+  grid-column-start: sub;
+}
+
 #currentUser {
   grid-row-start: detail;
 }
-#subscriptions {
-  grid-row-start: 1;
-  grid-column-start: sub;
-}
-#currentSubscription {
-  grid-row-start:detail;
-}
+
 #replication {
-  grid-row-start: span 2;
+  grid-row-start: 2;
+  grid-column-start: 3;
+  grid-row-end: result;
 }
 </style>
